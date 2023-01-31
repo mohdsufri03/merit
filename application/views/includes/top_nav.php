@@ -2,17 +2,27 @@
 		<div id="header" class="app-header app-header-inverse">
 			<!-- BEGIN navbar-header -->
 			<div class="navbar-header">
-				<a href="/" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>KSK STUDENT</b>RECORD</a>
-				<a href="/" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>KOD KESALAHAN</b></a>
-				<a href="/" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>SUMBANGAN MERIT</b></a>
+			<form action="" method="GET" name="search">
+				<a href="/" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>KSK STUDENT</b></a>
 				<button type="button" class="navbar-mobile-toggler" data-toggle="app-sidebar-mobile">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					
 				</button>
+	
+			</div>
+			<div class="navbar-header">
+				<form action="" method="GET" name="search">
+				<a href="Kodkesalahan.html" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>KOD KESALAHAN</b></a>
+				
 
 			</div>
+			<div class="navbar-header">
+				<form action="" method="GET" name="search">
+				<a href="register" class="navbar-brand"><!--<i class="fab fa-facebook-square fa-lg"></i>--><i class="fa fa-spa"></i> <b>KOD KEBAIKAN</b></a>
+			</div>
+
 			<!-- END navbar-header -->
 			<!-- BEGIN header-nav -->
 			<div class="navbar-nav">
