@@ -1,0 +1,141 @@
+<?php
+
+if (!defined('BASEPATH'))
+	exit('No direct script access allowed');
+
+class Plug_customer_model extends CI_Model
+{
+
+	public $table = 'plug_customer';
+	public $id = 'plug_customer_id';
+	public $order = 'DESC';
+
+	function __construct()
+	{
+		parent::__construct();
+	}
+
+	// get all
+	function get_all()
+	{
+		$this->db->order_by($this->id, $this->order);
+		return $this->db->get($this->table)->result();
+	}
+
+	// get data by id
+	function get_customer_by_id($id)
+	{
+		$this->db->select('plug_customer.*, mod_media.mod_media_id, mod_media.mod_media_address, mod_media.mod_media_directory');
+		$this->db->join('mod_media', 'plug_customer.plug_customer_media = mod_media.mod_media_id');
+		$this->db->where($this->id, $id);
+		return $this->db->get($this->table)->row();
+	}
+	// function get_by_id($id){
+	// 	$this->db->where($this->id, $id);
+	// 	return $this->db->get($this->table)->row();
+	// }
+
+	// get total rows
+	function total_rows($q = NULL) {
+// 		$this->db->like('plug_customer_id', $q);
+	// 	$this->db->or_like('plug_customer_name', $q);
+	// 	$this->db->or_like('plug_customer_gender_meta', $q);
+	// 	$this->db->or_like('plug_customer_dob', $q);
+	// 	$this->db->or_like('plug_customer_occupation', $q);
+	// 	$this->db->or_like('plug_customer_phone', $q);
+	// 	$this->db->or_like('plug_customer_email', $q);
+	// 	$this->db->or_like('plug_customer_marital_meta', $q);
+	// 	$this->db->or_like('plug_customer_height', $q);
+	// 	$this->db->or_like('plug_customer_weight', $q);
+	// 	$this->db->or_like('plug_customer_address', $q);
+	$this->db->where('plug_customer_status',2);
+	$this->db->from($this->table);
+		return $this->db->count_all_results();
+	}
+
+	// get data with limit and search
+	function get_limit_data($limit, $start = 0, $q = NULL) {
+		
+		$this->db->order_by($this->id, $this->order);
+		// $this->db->like('plug_customer_id', $q);
+		// $this->db->or_like('plug_customer_name', $q);
+		/*
+		$this->db->or_like('plug_customer_gender_meta', $q);
+		$this->db->or_like('plug_customer_dob', $q);
+		$this->db->or_like('plug_customer_occupation', $q);
+		$this->db->or_like('plug_customer_phone', $q);
+		$this->db->or_like('plug_customer_email', $q);
+		$this->db->or_like('plug_customer_marital_meta', $q);
+		$this->db->or_like('plug_customer_height', $q);
+		$this->db->or_like('plug_customer_weight', $q);
+		$this->db->or_like('plug_customer_address', $q);*/
+		$this->db->limit($limit, $start);
+		$this->db->where(array('plug_customer_status'=>2));
+		return $this->db->get($this->table)->result();
+	}
+
+	// insert data
+	function insert($data)
+	{
+		$this->db->insert($this->table, $data);
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
+	}
+
+	// update data
+	function update($id, $data)
+	{
+		$this->db->where($this->id, $id);
+		$this->db->update($this->table, $data);
+	}
+
+	// delete data
+	function delete($id)
+	{
+		$this->db->where($this->id, $id);
+		$this->db->delete($this->table);
+	}
+	
+
+	function get_form_field(){
+		// $this->db->select('mod_meta.mod_meta_id, mod_meta.mod_meta_key, mod_meta.mod_meta_name, mod_meta.mod_meta_params, mod_groups.mod_groups_name, mod_groups.mod_groups_meta_type, mod_groups.mod_groups_parent_id, mod_groups.mod_groups_enabled');
+		// $this->db->join('mod_groups', 'mod_meta.mod_meta_id = mod_groups.mod_groups_parent_id', 'right');
+		$this->db->order_by('mod_meta_seqn', 'ASC');
+		$this->db->where(array('mod_meta_key'=>'_customer_form','mod_meta_enabled'=>'1'));
+		return $this->db->get('mod_meta')->result();
+	}
+	function get_form_field_option($id){
+		$this->db->select('mod_meta.mod_meta_id, mod_meta.mod_meta_key, mod_meta.mod_meta_name, mod_meta.mod_meta_params, mod_groups.mod_groups_name, mod_groups.mod_groups_meta_type, mod_groups.mod_groups_parent_id, mod_groups.mod_groups_enabled, mod_groups.mod_groups_id');
+		$this->db->join('mod_groups', 'mod_meta.mod_meta_id = mod_groups.mod_groups_parent_id', 'inner');
+		$this->db->order_by('mod_groups_sqn', 'ASC');
+		$this->db->where(array('mod_meta_key'=>'_customer_form', 'mod_groups_parent_id'=>$id));
+		return $this->db->get('mod_meta')->result();
+	}
+	
+	function get_data_by_ic($ic){
+		$this->db->select('plug_customer_ic');
+		$this->db->where(array('plug_customer_ic'=>$ic, 'plug_customer_status !='=> 3));
+		return $this->db->get($this->table);
+	}
+	function get_data_by_phone($phone){
+		$this->db->select('plug_customer_phone');
+		$this->db->where(array('plug_customer_phone'=>$phone, 'plug_customer_status !='=> 3));
+		return $this->db->get($this->table);
+	}
+	function insert_media($data){
+		$this->db->insert('mod_media', $data);
+		$insert_id = $this->db->insert_id();
+		return $insert_id;
+	}
+	function update_media($media_id,$data){
+		$this->db->where('mod_media_id', $media_id);
+		$this->db->update('mod_media', $data);
+	}
+
+}
+
+/* End of file Plug_customer_model.php */
+/* Location: ./application/models/Plug_customer_model.php */
+/* Please DO NOT modify this information : */
+/* Generated by Harviacode Codeigniter CRUD Generator 2022-11-18 13:32:10 */
+/* http://harviacode.com */
